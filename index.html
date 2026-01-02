@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>حسابداری خانوادگی خادمی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Vazirmatn', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --secondary: #8b5cf6;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --info: #3b82f6;
+    --dark: #1f2937;
+    --light: #f9fafb;
+    --gray: #6b7280;
+    --border: #e5e7eb;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+body {
+    background: var(--light);
+    color: var(--dark);
+    overflow-x: hidden;
+    padding-bottom: 80px;
+}
+
+/* Header */
+.header {
+    background: var(--bg-gradient);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-logo {
+    width: 35px;
+    height: 35px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+/* Bottom Navigation - Instagram Style */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px var(--shadow);
+    z-index: 1000;
+    border-top: 1px solid var(--border);
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 5px 15px;
+    transition: all 0.3s;
+    color: var(--gray);
+    text-decoration: none;
+}
+
+.nav-item.active {
+    color: var(--primary);
+}
+
+.nav-icon {
+    font-size: 24px;
+    transition: transform 0.3s;
+}
+
+.nav-item.active .nav-icon {
+    transform: scale(1.2);
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Page Container */
+.page {
+    display: none;
+    padding: 20px;
+    animation: fadeIn 0.3s;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Cards */
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.card-header {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-icon {
+    width: 35px;
+    height: 35px;
+    background: var(--bg-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+}
+
+/* Currency Cards */
+.currency-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.currency-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 20px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 102, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.currency-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+}
+
+.currency-name {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 10px;
+}
+
+.currency-amount {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.currency-flag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--dark);
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s;
+    background: white;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: var(--bg-gradient);
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 102, 241, 0.3);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+/* Transaction List */
+.transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.transaction-item {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+.transaction-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.transaction-icon.income {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.transaction-icon.expense {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+}
+
+.transaction-icon.transfer {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--info);
+}
+
+.transaction-info {
+    flex: 1;
+}
+
+.transaction-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.transaction-desc {
+    font-size: 13px;
+    color: var(--gray);
+}
+
+.transaction-amount {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.transaction-amount.income {
+    color: var(--success);
+}
+
+.transaction-amount.expense {
+    color: var(--danger);
+}
+
+/* Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: var(--gray);
+}
+
+/* Country Selector */
+.country-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.country-btn {
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.country-btn.active {
+    border-color: var(--primary);
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.country-flag {
+    font-size: 24px;
+}
+
+.country-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Exchange Calculator */
+.exchange-box {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.exchange-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.exchange-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--bg-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+.rate-badge {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 3px solid var(--border);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: 15px;
+    opacity: 0.3;
+}
+
+.empty-text {
+    font-size: 16px;
+    color: var(--gray);
+}
+
+/* Filter Tabs */
+.filter-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+.filter-tab {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 2px solid var(--border);
+    background: white;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.filter-tab.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.modal-close {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    background: var(--light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.3s;
+}
+
+.modal-close:active {
+    transform: scale(0.9);
+}
+
+/* Reports */
+.report-section {
+    margin-bottom: 30px;
+}
+
+.report-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.report-item {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 6px var(--shadow);
+}
+
+.report-label {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 8px;
+}
+
+.report-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    body {
+        max-width: 480px;
+        margin: 0 auto;
+        box-shadow: 0 0 20px var(--shadow);
+    }
+    
+    .header,
+    .bottom-nav {
+        max-width: 480px;
+        margin: 0 auto;
+    }
+}
+
+/* Currency Specific Colors */
+.currency-AFN {
+    background: linear-gradient(135deg, #D32F2F 0%, #C62828 100%);
+}
+
+.currency-TRY {
+    background: linear-gradient(135deg, #E53935 0%, #C62828 100%);
+}
+
+.currency-USD {
+    background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+}
+
+.currency-AED {
+    background: linear-gradient(135deg, #00796B 0%, #00695C 100%);
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 3000;
+    animation: slideUp 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="header-title">
+        <div class="header-logo">💰</div>
+        <span>حسابداری خانوادگی خادمی</span>
+    </div>
+</div>
+
+<!-- Dashboard Page -->
+<div class="page active" id="dashboardPage">
+    <!-- Currency Cards -->
+    <div class="currency-grid">
+        <div class="currency-card currency-AFN">
+            <div class="currency-flag">🇦🇫</div>
+            <div class="currency-name">افغانی</div>
+            <div class="currency-amount" id="balanceAFN">0</div>
+            <div style="font-size: 12px; opacity: 0.8;">افغانستان</div>
+        </div>
+        <div class="currency-card currency-TRY">
+            <div class="currency-flag">🇹🇷</div>
+            <div class="currency-name">لیره</div>
+            <div class="currency-amount" id="balanceTRY">0</div>
+            <div style="font-size: 12px; opacity: 0.8;">ترکیه</div>
+        </div>
+        <div class="currency-card currency-USD">
+            <div class="currency-flag">🇺🇸</div>
+            <div class="currency-name">دالر</div>
+            <div class="currency-amount" id="balanceUSD">0</div>
+            <div style="font-size: 12px; opacity: 0.8;">آمریکا</div>
+        </div>
+        <div class="currency-card currency-AED">
+            <div class="currency-flag">🇦🇪</div>
+            <div class="currency-name">درهم</div>
+            <div class="currency-amount" id="balanceAED">0</div>
+            <div style="font-size: 12px; opacity: 0.8;">دبی</div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon">📊</div>
+            آمار سریع
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalIncome">0</div>
+                <div class="stat-label">کل درآمد</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalExpense">0</div>
+                <div class="stat-label">کل هزینه</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon">📝</div>
+            تراکنش‌های اخیر
+        </div>
+        <div class="transaction-list" id="recentTransactions">
+            <div class="empty-state">
+                <div class="empty-icon">📭</div>
+                <div class="empty-text">هنوز تراکنشی ثبت نشده است</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Transactions Page -->
+<div class="page" id="transactionsPage">
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterTransactions('all')">همه</button>
+        <button class="filter-tab" onclick="filterTransactions('income')">درآمد</button>
+        <button class="filter-tab" onclick="filterTransactions('expense')">هزینه</button>
+        <button class="filter-tab" onclick="filterTransactions('transfer')">انتقال</button>
+    </div>
+
+    <!-- Transaction List -->
+    <div class="transaction-list" id="allTransactions">
+        <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <div class="empty-text">تراکنشی یافت نشد</div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Transaction Page -->
+<div class="page" id="addPage">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon">➕</div>
+            افزودن تراکنش جدید
+        </div>
+
+        <div class="country-selector">
+            <button class="country-btn active" onclick="selectCountry('AFG')">
+                <div class="country-flag">🇦🇫</div>
+                <div class="country-name">افغانستان</div>
+            </button>
+            <button class="country-btn" onclick="selectCountry('TUR')">
+                <div class="country-flag">🇹🇷</div>
+                <div class="country-name">ترکیه</div>
+            </button>
+            <button class="country-btn" onclick="selectCountry('UAE')">
+                <div class="country-flag">🇦🇪</div>
+                <div class="country-name">دبی</div>
+            </button>
+        </div>
+
+        <form id="transactionForm">
+            <div class="form-group">
+                <label class="form-label">نوع تراکنش</label>
+                <select class="form-select" id="transactionType" required>
+                    <option value="income">درآمد ➕</option>
+                    <option value="expense">هزینه ➖</option>
+                    <option value="transfer">انتقال وجه 🔄</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">ارز</label>
+                <select class="form-select" id="currency" required>
+                    <option value="AFN">افغانی 🇦🇫</option>
+                    <option value="TRY">لیره 🇹🇷</option>
+                    <option value="USD">دالر 🇺🇸</option>
+                    <option value="AED">درهم 🇦🇪</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">مبلغ</label>
+                <input type="number" class="form-input" id="amount" placeholder="مبلغ را وارد کنید" required step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">شرح</label>
+                <input type="text" class="form-input" id="description" placeholder="شرح تراکنش" required>
+            </div>
+
+            <div class="form-group" id="transferCurrencyGroup" style="display: none;">
+                <label class="form-label">به ارز</label>
+                <select class="form-select" id="toCurrency">
+                    <option value="AFN">افغانی 🇦🇫</option>
+                    <option value="TRY">لیره 🇹🇷</option>
+                    <option value="USD">دالر 🇺🇸</option>
+                    <option value="AED">درهم 🇦🇪</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+                ✅ ثبت تراکنش
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Exchange Page -->
+<div class="page" id="exchangePage">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon">💱</div>
+            تبدیل ارز
+        </div>
+
+        <div class="exchange-box">
+            <div class="exchange-header">
+                <div class="exchange-icon">📤</div>
+                <div class="rate-badge">از</div>
+            </div>
+            <div class="form-group">
+                <select class="form-select" id="fromCurrency">
+                    <option value="AFN">افغانی 🇦🇫</option>
+                    <option value="TRY">لیره 🇹🇷</option>
+                    <option value="USD">دالر 🇺🇸</option>
+                    <option value="AED">درهم 🇦🇪</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-input" id="fromAmount" placeholder="مبلغ" step="0.01">
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: -10px 0; font-size: 24px;">⬇️</div>
+
+        <div class="exchange-box">
+            <div class="exchange-header">
+                <div class="exchange-icon">📥</div>
+                <div class="rate-badge" id="exchangeRate">نرخ: -</div>
+            </div>
+            <div class="form-group">
+                <select class="form-select" id="toCurrencyExchange">
+                    <option value="USD">دالر 🇺🇸</option>
+                    <option value="AFN">افغانی 🇦🇫</option>
+                    <option value="TRY">لیره 🇹🇷</option>
+                    <option value="AED">درهم 🇦🇪</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-input" id="toAmount" placeholder="دریافتی" readonly>
+            </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" onclick="executeExchange()">
+            💱 تبدیل کن
+        </button>
+    </div>
+
+    <!-- Exchange Rates -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon">📈</div>
+            نرخ‌های ارز
+        </div>
+        <div class="report-grid">
+            <div class="report-item">
+                <div class="report-label">USD به AFN</div>
+                <div class="report-value" id="rateUSD_AFN">-</div>
+            </div>
+            <div class="report-item">
+                <div class="report-label">USD به TRY</div>
+                <div class="report-value" id="rateUSD_TRY">-</div>
+            </div>
+            <div class="report-item">
+                <div class="report-label">USD به AED</div>
+                <div class="report-value" id="rateUSD_AED">-</div>
+            </div>
+            <div class="report-item">
+                <div class="report-label">EUR به USD</div>
+                <div class="report-value" id="rateEUR_USD">-</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reports Page -->
+<div class="page" id="reportsPage">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-icon">📊</div>
+            گزارش مالی
+        </div>
+
+        <div class="report-section">
+            <div class="report-title">💰 موجودی به تفکیک ارز</div>
+            <div class="report-grid">
+                <div class="report-item">
+                    <div class="report-label">🇦🇫 افغانی</div>
+                    <div class="report-value" id="reportAFN">0</div>
+                </div>
+                <div class="report-item">
+                    <div class="report-label">🇹🇷 لیره</div>
+                    <div class="report-value" id="reportTRY">0</div>
+                </div>
+                <div class="report-item">
+                    <div class="report-label">🇺🇸 دالر</div>
+                    <div class="report-value" id="reportUSD">0</div>
+                </div>
+                <div class="report-item">
+                    <div class="report-label">🇦🇪 درهم</div>
+                    <div class="report-value" id="reportAED">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <div class="report-title">📈 خلاصه مالی</div>
+            <div class="report-grid">
+                <div class="report-item">
+                    <div class="report-label">کل درآمد</div>
+                    <div class="report-value" id="reportTotalIncome" style="color: var(--success);">0</div>
+                </div>
+                <div class="report-item">
+                    <div class="report-label">کل هزینه</div>
+                    <div class="report-value" id="reportTotalExpense" style="color: var(--danger);">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="report-section">
+            <div class="report-title">🌍 موجودی به تفکیک کشور</div>
+            <div class="report-grid">
+                <div class="report-item">
+                    <div class="report-label">🇦🇫 افغانستان</div>
+                    <div class="report-value" id="reportAfghanistan">0</div>
+                </div>
+                <div class="report-item">
+                    <div class="report-label">🇹🇷 ترکیه</div>
+                    <div class="report-value" id="reportTurkey">0</div>
+                </div>
+                <div class="report-item">
+                    <div class="report-label">🇦🇪 دبی</div>
+                    <div class="report-value" id="reportDubai">0</div>
+                </div>
+                <div class="report-item">
+                    <div class="report-label">📊 کل</div>
+                    <div class="report-value" id="reportTotal">0</div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-success btn-block" onclick="exportData()">
+            📥 خروجی Excel
+        </button>
+    </div>
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+    <a class="nav-item active" href="#" onclick="showPage('dashboard')">
+        <div class="nav-icon">🏠</div>
+        <div class="nav-label">خانه</div>
+    </a>
+    <a class="nav-item" href="#" onclick="showPage('transactions')">
+        <div class="nav-icon">📋</div>
+        <div class="nav-label">تراکنش‌ها</div>
+    </a>
+    <a class="nav-item" href="#" onclick="showPage('add')">
+        <div class="nav-icon">➕</div>
+        <div class="nav-label">افزودن</div>
+    </a>
+    <a class="nav-item" href="#" onclick="showPage('exchange')">
+        <div class="nav-icon">💱</div>
+        <div class="nav-label">تبدیل ارز</div>
+    </a>
+    <a class="nav-item" href="#" onclick="showPage('reports')">
+        <div class="nav-icon">📊</div>
+        <div class="nav-label">گزارش‌ها</div>
+    </a>
+</div>
+
+<script>
+// Database Structure
+let db = {
+    transactions: [],
+    balances: {
+        AFN: 0,
+        TRY: 0,
+        USD: 0,
+        AED: 0
+    },
+    selectedCountry: 'AFG'
+};
+
+// Exchange Rates (نرخ‌های تقریبی)
+const exchangeRates = {
+    USD: {
+        AFN: 70,
+        TRY: 32,
+        AED: 3.67,
+        USD: 1
+    },
+    AFN: {
+        USD: 1/70,
+        TRY: 32/70,
+        AED: 3.67/70,
+        AFN: 1
+    },
+    TRY: {
+        USD: 1/32,
+        AFN: 70/32,
+        AED: 3.67/32,
+        TRY: 1
+    },
+    AED: {
+        USD: 1/3.67,
+        AFN: 70/3.67,
+        TRY: 32/3.67,
+        AED: 1
+    }
+};
+
+// Initialize App
+document.addEventListener('DOMContentLoaded', function() {
+    loadData();
+    updateDashboard();
+    updateExchangeRates();
+    
+    // Form submission
+    document.getElementById('transactionForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        addTransaction();
+    });
+    
+    // Transaction type change
+    document.getElementById('transactionType').addEventListener('change', function() {
+        const transferGroup = document.getElementById('transferCurrencyGroup');
+        transferGroup.style.display = this.value === 'transfer' ? 'block' : 'none';
+    });
+    
+    // Exchange calculator
+    document.getElementById('fromAmount').addEventListener('input', calculateExchange);
+    document.getElementById('fromCurrency').addEventListener('change', calculateExchange);
+    document.getElementById('toCurrencyExchange').addEventListener('change', calculateExchange);
+});
+
+// Load data from localStorage
+function loadData() {
+    const saved = localStorage.getItem('khademiFamilyAccounting');
+    if (saved) {
+        db = JSON.parse(saved);
+    }
+}
+
+// Save data to localStorage
+function saveData() {
+    localStorage.setItem('khademiFamilyAccounting', JSON.stringify(db));
+}
+
+// Show page
+function showPage(page) {
+    // Remove active class from all pages and nav items
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    
+    // Add active class to selected page and nav item
+    document.getElementById(page + 'Page').classList.add('active');
+    event.currentTarget.classList.add('active');
+    
+    // Update content
+    if (page === 'dashboard') {
+        updateDashboard();
+    } else if (page === 'transactions') {
+        displayAllTransactions();
+    } else if (page === 'reports') {
+        updateReports();
+    }
+}
+
+// Select country
+function selectCountry(country) {
+    db.selectedCountry = country;
+    document.querySelectorAll('.country-btn').forEach(btn => btn.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+}
+
+// Add transaction
+function addTransaction() {
+    const type = document.getElementById('transactionType').value;
+    const currency = document.getElementById('currency').value;
+    const amount = parseFloat(document.getElementById('amount').value);
+    const description = document.getElementById('description').value;
+    
+    if (!amount || amount <= 0) {
+        showToast('لطفاً مبلغ معتبر وارد کنید');
+        return;
+    }
+    
+    const transaction = {
+        id: Date.now(),
+        type: type,
+        currency: currency,
+        amount: amount,
+        description: description,
+        country: db.selectedCountry,
+        date: new Date().toISOString()
+    };
+    
+    // Update balance
+    if (type === 'income') {
+        db.balances[currency] += amount;
+    } else if (type === 'expense') {
+        if (db.balances[currency] < amount) {
+            showToast('موجودی کافی نیست');
+            return;
+        }
+        db.balances[currency] -= amount;
+    } else if (type === 'transfer') {
+        const toCurrency = document.getElementById('toCurrency').value;
+        if (db.balances[currency] < amount) {
+            showToast('موجودی کافی نیست');
+            return;
+        }
+        db.balances[currency] -= amount;
+        const convertedAmount = amount * exchangeRates[currency][toCurrency];
+        db.balances[toCurrency] += convertedAmount;
+        transaction.toCurrency = toCurrency;
+        transaction.convertedAmount = convertedAmount;
+    }
+    
+    db.transactions.push(transaction);
+    saveData();
+    
+    // Reset form
+    document.getElementById('transactionForm').reset();
+    
+    showToast('تراکنش با موفقیت ثبت شد ✅');
+    
+    // Go to dashboard
+    setTimeout(() => {
+        showPage('dashboard');
+    }, 1000);
+}
+
+// Update dashboard
+function updateDashboard() {
+    // Update currency cards
+    document.getElementById('balanceAFN').textContent = formatNumber(db.balances.AFN);
+    document.getElementById('balanceTRY').textContent = formatNumber(db.balances.TRY);
+    document.getElementById('balanceUSD').textContent = formatNumber(db.balances.USD);
+    document.getElementById('balanceAED').textContent = formatNumber(db.balances.AED);
+    
+    // Calculate totals
+    let totalIncome = 0;
+    let totalExpense = 0;
+    
+    db.transactions.forEach(t => {
+        if (t.type === 'income') {
+            totalIncome += t.amount;
+        } else if (t.type === 'expense') {
+            totalExpense += t.amount;
+        }
+    });
+    
+    document.getElementById('totalIncome').textContent = formatNumber(totalIncome);
+    document.getElementById('totalExpense').textContent = formatNumber(totalExpense);
+    
+    // Display recent transactions
+    displayRecentTransactions();
+}
+
+// Display recent transactions
+function displayRecentTransactions() {
+    const container = document.getElementById('recentTransactions');
+    const recent = db.transactions.slice(-5).reverse();
+    
+    if (recent.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">📭</div>
+                <div class="empty-text">هنوز تراکنشی ثبت نشده است</div>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = recent.map(t => {
+        const icon = t.type === 'income' ? '💰' : t.type === 'expense' ? '💸' : '🔄';
+        const amountClass = t.type === 'income' ? 'income' : 'expense';
+        const sign = t.type === 'income' ? '+' : '-';
+        
+        return `
+            <div class="transaction-item">
+                <div class="transaction-icon ${t.type}">
+                    ${icon}
+                </div>
+                <div class="transaction-info">
+                    <div class="transaction-title">${t.description}</div>
+                    <div class="transaction-desc">${formatDate(t.date)} • ${getCurrencyName(t.currency)}</div>
+                </div>
+                <div class="transaction-amount ${amountClass}">
+                    ${t.type !== 'transfer' ? sign : ''}${formatNumber(t.amount)}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Display all transactions
+function displayAllTransactions() {
+    const container = document.getElementById('allTransactions');
+    const sorted = [...db.transactions].reverse();
+    
+    if (sorted.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">📋</div>
+                <div class="empty-text">تراکنشی یافت نشد</div>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = sorted.map(t => {
+        const icon = t.type === 'income' ? '💰' : t.type === 'expense' ? '💸' : '🔄';
+        const amountClass = t.type === 'income' ? 'income' : 'expense';
+        const sign = t.type === 'income' ? '+' : t.type === 'expense' ? '-' : '';
+        
+        return `
+            <div class="transaction-item" data-type="${t.type}">
+                <div class="transaction-icon ${t.type}">
+                    ${icon}
+                </div>
+                <div class="transaction-info">
+                    <div class="transaction-title">${t.description}</div>
+                    <div class="transaction-desc">${formatDate(t.date)} • ${getCurrencyName(t.currency)}</div>
+                </div>
+                <div class="transaction-amount ${amountClass}">
+                    ${sign}${formatNumber(t.amount)}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Filter transactions
+function filterTransactions(filter) {
+    // Update active tab
+    document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    
+    // Filter items
+    const items = document.querySelectorAll('#allTransactions .transaction-item');
+    items.forEach(item => {
+        if (filter === 'all') {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = item.dataset.type === filter ? 'flex' : 'none';
+        }
+    });
+}
+
+// Calculate exchange
+function calculateExchange() {
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrencyExchange').value;
+    const amount = parseFloat(document.getElementById('fromAmount').value);
+    
+    if (!amount || amount <= 0) {
+        document.getElementById('toAmount').value = '';
+        document.getElementById('exchangeRate').textContent = 'نرخ: -';
+        return;
+    }
+    
+    const rate = exchangeRates[from][to];
+    const result = amount * rate;
+    
+    document.getElementById('toAmount').value = result.toFixed(2);
+    document.getElementById('exchangeRate').textContent = `نرخ: ${rate.toFixed(4)}`;
+}
+
+// Execute exchange
+function executeExchange() {
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrencyExchange').value;
+    const amount = parseFloat(document.getElementById('fromAmount').value);
+    
+    if (!amount || amount <= 0) {
+        showToast('لطفاً مبلغ معتبر وارد کنید');
+        return;
+    }
+    
+    if (db.balances[from] < amount) {
+        showToast('موجودی کافی نیست');
+        return;
+    }
+    
+    const rate = exchangeRates[from][to];
+    const result = amount * rate;
+    
+    // Update balances
+    db.balances[from] -= amount;
+    db.balances[to] += result;
+    
+    // Add transaction
+    const transaction = {
+        id: Date.now(),
+        type: 'transfer',
+        currency: from,
+        amount: amount,
+        toCurrency: to,
+        convertedAmount: result,
+        description: `تبدیل ${getCurrencyName(from)} به ${getCurrencyName(to)}`,
+        country: db.selectedCountry,
+        date: new Date().toISOString()
+    };
+    
+    db.transactions.push(transaction);
+    saveData();
+    
+    showToast('تبدیل ارز با موفقیت انجام شد ✅');
+    
+    // Reset form
+    document.getElementById('fromAmount').value = '';
+    document.getElementById('toAmount').value = '';
+    
+    updateDashboard();
+}
+
+// Update exchange rates display
+function updateExchangeRates() {
+    document.getElementById('rateUSD_AFN').textContent = exchangeRates.USD.AFN.toFixed(2);
+    document.getElementById('rateUSD_TRY').textContent = exchangeRates.USD.TRY.toFixed(2);
+    document.getElementById('rateUSD_AED').textContent = exchangeRates.USD.AED.toFixed(2);
+    document.getElementById('rateEUR_USD').textContent = '1.08';
+}
+
+// Update reports
+function updateReports() {
+    // Currency balances
+    document.getElementById('reportAFN').textContent = formatNumber(db.balances.AFN);
+    document.getElementById('reportTRY').textContent = formatNumber(db.balances.TRY);
+    document.getElementById('reportUSD').textContent = formatNumber(db.balances.USD);
+    document.getElementById('reportAED').textContent = formatNumber(db.balances.AED);
+    
+    // Totals
+    let totalIncome = 0;
+    let totalExpense = 0;
+    
+    db.transactions.forEach(t => {
+        if (t.type === 'income') totalIncome += t.amount;
+        if (t.type === 'expense') totalExpense += t.amount;
+    });
+    
+    document.getElementById('reportTotalIncome').textContent = formatNumber(totalIncome);
+    document.getElementById('reportTotalExpense').textContent = formatNumber(totalExpense);
+    
+    // Country balances (example calculation)
+    const totalUSD = db.balances.USD + (db.balances.AFN / exchangeRates.USD.AFN) + 
+                     (db.balances.TRY / exchangeRates.USD.TRY) + 
+                     (db.balances.AED / exchangeRates.USD.AED);
+    
+    document.getElementById('reportAfghanistan').textContent = formatNumber(db.balances.AFN) + ' AFN';
+    document.getElementById('reportTurkey').textContent = formatNumber(db.balances.TRY) + ' TRY';
+    document.getElementById('reportDubai').textContent = formatNumber(db.balances.AED) + ' AED';
+    document.getElementById('reportTotal').textContent = formatNumber(totalUSD) + ' USD';
+}
+
+// Export data
+function exportData() {
+    const data = JSON.stringify(db, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `khademi-accounting-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('فایل با موفقیت دانلود شد 📥');
+}
+
+// Helper functions
+function formatNumber(num) {
+    return new Intl.NumberFormat('fa-IR', {
+        maximumFractionDigits: 2
+    }).format(num);
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('fa-IR', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    }).format(date);
+}
+
+function getCurrencyName(code) {
+    const names = {
+        'AFN': 'افغانی',
+        'TRY': 'لیره',
+        'USD': 'دالر',
+        'AED': 'درهم'
+    };
+    return names[code] || code;
+}
+
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+</script>
+
+</body>
+</html>
